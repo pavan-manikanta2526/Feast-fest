@@ -1,0 +1,1469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- Viewport meta tag ensures proper scaling and responsiveness on mobile devices -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AURA '26 | Annual College Cultural Fest</title>
+    
+    <!-- Importing clean, modern typography from Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        /* ==========================================================================
+           1. CSS VARIABLES & RESET (Design Tokens for Colors, Fonts & Spacing)
+           ========================================================================== */
+        :root {
+            --primary: #6366f1;         /* Vibrant Indigo */
+            --primary-dark: #4f46e5;
+            --secondary: #ec4899;       /* Electric Pink/Magenta */
+            --accent: #f59e0b;          /* Warm Amber Gold */
+            --bg-dark: #0f172a;         /* Deep Midnight Slate */
+            --bg-card-dark: #1e293b;
+            --bg-light: #f8fafc;        /* Clean Off-White */
+            --surface: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --text-light: #f1f5f9;
+            --border-color: #e2e8f0;
+            --radius-sm: 8px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --shadow-sm: 0 4px 6px -1px rgba(15, 23, 42, 0.06);
+            --shadow-md: 0 12px 24px -4px rgba(15, 23, 42, 0.1);
+            --shadow-glow: 0 10px 30px -5px rgba(99, 102, 241, 0.4);
+            --transition: all 0.3s ease;
+        }
+
+        /* Reset default browser spacing and use border-box sizing */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth; /* Smooth scrolling when clicking navigation links */
+            font-size: 16px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden; /* Prevents unwanted horizontal scrolling */
+        }
+
+        h1, h2, h3, h4, .brand-logo {
+            font-family: 'Outfit', sans-serif;
+            line-height: 1.2;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Reusable Container for consistent max-width and padding */
+        .container {
+            width: 92%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Section Spacing & Header Styling */
+        section {
+            padding: 5rem 0;
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 680px;
+            margin: 0 auto 3.5rem auto;
+        }
+
+        .section-badge {
+            display: inline-block;
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            margin-bottom: 0.75rem;
+        }
+
+        .section-header h2 {
+            font-size: clamp(2rem, 4vw, 2.75rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+            color: var(--text-main);
+        }
+
+        .section-header p {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.9rem 1.8rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 2px solid transparent;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: #ffffff;
+            box-shadow: var(--shadow-glow);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.08);
+        }
+
+        .btn-outline {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            border-color: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(6px);
+        }
+
+        .btn-outline:hover {
+            background: #ffffff;
+            color: var(--bg-dark);
+        }
+
+        /* ==========================================================================
+           2. STICKY NAVIGATION BAR (With Pure-CSS Mobile Menu Toggle)
+           ========================================================================== */
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(15, 23, 42, 0.92);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 1rem 0;
+        }
+
+        .nav-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .brand-logo {
+            font-size: 1.65rem;
+            font-weight: 900;
+            color: #ffffff;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .brand-logo span {
+            background: linear-gradient(135deg, var(--accent), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #cbd5e1;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover {
+            color: #ffffff;
+        }
+
+        .nav-cta {
+            padding: 0.6rem 1.35rem !important;
+            font-size: 0.9rem !important;
+        }
+
+        /* Pure-CSS Hamburger Menu (Hidden on Desktop) */
+        #menu-toggle {
+            display: none;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .hamburger span {
+            width: 26px;
+            height: 3px;
+            background: #ffffff;
+            border-radius: 3px;
+            transition: var(--transition);
+        }
+
+        /* ==========================================================================
+           3. HERO SECTION
+           ========================================================================== */
+        .hero {
+            position: relative;
+            background: radial-gradient(circle at top right, #312e81 0%, var(--bg-dark) 55%, #090d16 100%);
+            color: var(--text-light);
+            padding: 6rem 0 5.5rem 0;
+            overflow: hidden;
+        }
+
+        /* Decorative ambient glow circles */
+        .hero::before, .hero::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(90px);
+            z-index: 0;
+            opacity: 0.45;
+        }
+
+        .hero::before {
+            width: 380px;
+            height: 380px;
+            background: var(--primary);
+            top: -80px;
+            left: -80px;
+        }
+
+        .hero::after {
+            width: 350px;
+            height: 350px;
+            background: var(--secondary);
+            bottom: -100px;
+            right: -50px;
+        }
+
+        .hero-grid {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .event-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 0.45rem 1rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 900;
+            margin-bottom: 1.25rem;
+            letter-spacing: -1px;
+        }
+
+        .hero h1 .highlight {
+            background: linear-gradient(135deg, #a5b4fc, #f472b6, #fbbf24);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.125rem;
+            color: #cbd5e1;
+            margin-bottom: 2rem;
+            max-width: 580px;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+
+        /* Quick Stats Row */
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.12);
+        }
+
+        .stat-item h3 {
+            font-size: 1.85rem;
+            font-weight: 800;
+            color: #ffffff;
+        }
+
+        .stat-item p {
+            font-size: 0.875rem;
+            color: #94a3b8;
+            margin: 0;
+        }
+
+        /* Hero Right Visual Card */
+        .hero-card {
+            background: rgba(30, 41, 59, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: var(--radius-lg);
+            padding: 1.25rem;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-card img {
+            width: 100%;
+            height: 340px;
+            object-fit: cover;
+            border-radius: var(--radius-md);
+            margin-bottom: 1.25rem;
+        }
+
+        .hero-card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 0.5rem;
+        }
+
+        .hero-card-footer h4 {
+            font-size: 1.15rem;
+            color: #ffffff;
+        }
+
+        .hero-card-footer span {
+            font-size: 0.85rem;
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        /* ==========================================================================
+           4. EVENT DETAILS / CATEGORIES SECTION
+           ========================================================================== */
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.75rem;
+        }
+
+        .event-card {
+            background: var(--surface);
+            border-radius: var(--radius-md);
+            padding: 2rem;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .event-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-md);
+            border-color: rgba(99, 102, 241, 0.35);
+        }
+
+        .event-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.12), rgba(236, 72, 153, 0.12));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .event-card h3 {
+            font-size: 1.35rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .event-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .event-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        /* ==========================================================================
+           5. EVENT SCHEDULE SECTION (3-Day Structured Columns)
+           ========================================================================== */
+        .schedule-section {
+            background: #ffffff;
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .schedule-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .day-column {
+            background: var(--bg-light);
+            border-radius: var(--radius-md);
+            padding: 1.75rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .day-header {
+            padding-bottom: 1.25rem;
+            margin-bottom: 1.25rem;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .day-tag {
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--secondary);
+            letter-spacing: 1px;
+        }
+
+        .day-header h3 {
+            font-size: 1.4rem;
+            margin-top: 0.25rem;
+        }
+
+        .timeline-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .timeline-item {
+            background: var(--surface);
+            padding: 1rem 1.25rem;
+            border-radius: var(--radius-sm);
+            border-left: 4px solid var(--primary);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .timeline-time {
+            display: inline-block;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .timeline-item h4 {
+            font-size: 1.05rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .timeline-item p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* ==========================================================================
+           6. FEATURED PERFORMERS & HEADLINERS
+           ========================================================================== */
+        .performers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .performer-card {
+            background: var(--surface);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+        }
+
+        .performer-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .performer-img-wrap {
+            position: relative;
+            height: 270px;
+            overflow: hidden;
+        }
+
+        .performer-img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .performer-card:hover .performer-img-wrap img {
+            transform: scale(1.06);
+        }
+
+        .performer-badge {
+            position: absolute;
+            bottom: 1rem;
+            left: 1rem;
+            background: rgba(15, 23, 42, 0.85);
+            color: #ffffff;
+            backdrop-filter: blur(6px);
+            padding: 0.35rem 0.85rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .performer-info {
+            padding: 1.5rem;
+        }
+
+        .performer-info h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .performer-genre {
+            color: var(--secondary);
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .performer-info p {
+            color: var(--text-muted);
+            font-size: 0.92rem;
+        }
+
+        /* ==========================================================================
+           7. VENUE INFORMATION SECTION
+           ========================================================================== */
+        .venue-section {
+            background: var(--bg-dark);
+            color: var(--text-light);
+        }
+
+        .venue-section .section-header h2 {
+            color: #ffffff;
+        }
+
+        .venue-section .section-header p {
+            color: #94a3b8;
+        }
+
+        .venue-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2.5rem;
+            align-items: stretch;
+        }
+
+        .venue-details {
+            background: var(--bg-card-dark);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-md);
+            padding: 2.25rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 1.5rem;
+        }
+
+        .venue-item {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .venue-item-icon {
+            font-size: 1.5rem;
+            background: rgba(99, 102, 241, 0.2);
+            width: 46px;
+            height: 46px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .venue-item h4 {
+            font-size: 1.1rem;
+            color: #ffffff;
+            margin-bottom: 0.25rem;
+        }
+
+        .venue-item p {
+            font-size: 0.92rem;
+            color: #cbd5e1;
+        }
+
+        /* Visual Campus Map Card */
+        .venue-map-card {
+            background: linear-gradient(145deg, #1e293b, #0f172a);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: var(--radius-md);
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 340px;
+        }
+
+        /* Decorative grid pattern mimicking a campus map */
+        .map-grid-bg {
+            position: absolute;
+            inset: 0;
+            background-image: 
+                linear-gradient(rgba(99, 102, 241, 0.12) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(99, 102, 241, 0.12) 1px, transparent 1px);
+            background-size: 28px 28px;
+            z-index: 0;
+        }
+
+        .map-pin-box {
+            position: relative;
+            z-index: 1;
+            margin: auto;
+            text-align: center;
+            background: rgba(15, 23, 42, 0.88);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 1.75rem 2rem;
+            border-radius: var(--radius-md);
+            backdrop-filter: blur(8px);
+        }
+
+        .map-pin-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .map-pin-box h4 {
+            font-size: 1.25rem;
+            color: #ffffff;
+            margin-bottom: 0.35rem;
+        }
+
+        .map-pin-box p {
+            font-size: 0.9rem;
+            color: #94a3b8;
+            margin-bottom: 1rem;
+        }
+
+        /* ==========================================================================
+           8. REGISTRATION SECTION (Pure HTML Form + CSS :target Confirmation)
+           ========================================================================== */
+        .register-wrapper {
+            max-width: 780px;
+            margin: 0 auto;
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            padding: 2.75rem;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-md);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            border: 1.5px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            font-family: inherit;
+            font-size: 0.95rem;
+            color: var(--text-main);
+            background: var(--bg-light);
+            transition: var(--transition);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.12);
+        }
+
+        .radio-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.25rem;
+            padding-top: 0.25rem;
+        }
+
+        .radio-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500 !important;
+            cursor: pointer;
+        }
+
+        .radio-label input[type="radio"] {
+            width: auto;
+            accent-color: var(--primary);
+        }
+
+        .submit-row {
+            margin-top: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .submit-row .btn {
+            width: 100%;
+            max-width: 340px;
+            font-size: 1.05rem;
+        }
+
+        /* Pure-CSS Modal/Message Box triggered via #registration-success */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(6px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 2000;
+        }
+
+        .modal-overlay:target {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-box {
+            background: #ffffff;
+            max-width: 440px;
+            width: 100%;
+            border-radius: var(--radius-md);
+            padding: 2.25rem;
+            text-align: center;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35);
+            transform: translateY(15px);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay:target .modal-box {
+            transform: translateY(0);
+        }
+
+        .modal-icon {
+            width: 64px;
+            height: 64px;
+            background: #dcfce7;
+            color: #16a34a;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 1.25rem auto;
+        }
+
+        .modal-box h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-box p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* ==========================================================================
+           9. FOOTER
+           ========================================================================== */
+        footer {
+            background: #090d16;
+            color: #94a3b8;
+            padding: 4rem 0 2rem 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr;
+            gap: 2.5rem;
+            padding-bottom: 2.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .footer-brand p {
+            margin-top: 1rem;
+            font-size: 0.92rem;
+            max-width: 340px;
+        }
+
+        .footer-col h4 {
+            color: #ffffff;
+            font-size: 1.05rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-col ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            font-size: 0.92rem;
+        }
+
+        .footer-col a:hover {
+            color: #ffffff;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 1.75rem;
+            font-size: 0.85rem;
+        }
+
+        /* ==========================================================================
+           10. RESPONSIVE MEDIA QUERIES (Tablet & Mobile Adaptability)
+           ========================================================================== */
+        @media (max-width: 960px) {
+            .hero-grid,
+            .venue-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .schedule-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            section {
+                padding: 3.75rem 0;
+            }
+
+            /* Mobile Hamburger Navigation */
+            .hamburger {
+                display: flex;
+            }
+
+            .nav-links {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: #0f172a;
+                flex-direction: column;
+                padding: 1.5rem;
+                gap: 1.25rem;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                display: none;
+            }
+
+            /* Show menu when hidden checkbox is checked */
+            #menu-toggle:checked ~ .nav-links {
+                display: flex;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .register-wrapper {
+                padding: 1.75rem 1.25rem;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ======================================================================
+         NAVIGATION HEADER
+         ====================================================================== -->
+    <header class="navbar">
+        <div class="container nav-wrapper">
+            <a href="#" class="brand-logo">AURA <span>'26</span></a>
+
+            <!-- Pure CSS Mobile Menu Toggle -->
+            <input type="checkbox" id="menu-toggle" aria-label="Toggle navigation menu">
+            <label for="menu-toggle" class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </label>
+
+            <ul class="nav-links">
+                <li><a href="#events">Events</a></li>
+                <li><a href="#schedule">Schedule</a></li>
+                <li><a href="#performers">Performers</a></li>
+                <li><a href="#venue">Venue</a></li>
+                <li><a href="#register" class="btn btn-primary nav-cta">Register Now</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- ======================================================================
+         HERO BANNER SECTION
+         ====================================================================== -->
+    <section class="hero">
+        <div class="container hero-grid">
+            <div class="hero-content">
+                <div class="event-pill">✨ March 20 – 22, 2026 • Central Campus</div>
+                <h1>Unleash Your Rhythm at <span class="highlight">AURA '26</span></h1>
+                <p>
+                    Experience three unforgettable days of music, dance, theater, fine arts, and star-studded pro-nights at our annual inter-collegiate cultural extravaganza.
+                </p>
+                <div class="hero-actions">
+                    <a href="#register" class="btn btn-primary">Book Your Pass →</a>
+                    <a href="#schedule" class="btn btn-outline">Explore Schedule</a>
+                </div>
+
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <h3>25+</h3>
+                        <p>Cultural Events</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>₹2.5L</h3>
+                        <p>Prize Pool</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>5,000+</h3>
+                        <p>Student Footfall</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hero-card">
+                <img 
+                    src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=900&q=80" 
+                    alt="Live concert stage lights at college cultural festival"
+                    onerror="this.src='https://placehold.co/800x500/1e293b/f8fafc?text=AURA+2026+Main+Stage'"
+                >
+                <div class="hero-card-footer">
+                    <div>
+                        <h4>Grand Pro-Show Finale</h4>
+                        <span>Open Air Amphitheater • 7:00 PM</span>
+                    </div>
+                    <a href="#performers" class="btn btn-primary nav-cta">Lineup</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======================================================================
+         EVENT DETAILS & CATEGORIES SECTION
+         ====================================================================== -->
+    <section id="events">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Flagship Competitions</span>
+                <h2>Celebrate Art, Music & Expression</h2>
+                <p>Compete against top college talent across performing arts, visual design, and literary showcases.</p>
+            </div>
+
+            <div class="events-grid">
+                <!-- Event Card 1 -->
+                <article class="event-card">
+                    <div>
+                        <div class="event-icon">🎸</div>
+                        <h3>Battle of Bands</h3>
+                        <p>Original compositions, electrifying riffs, and high-energy stage presence. Bring your crew and own the main stage.</p>
+                    </div>
+                    <div class="event-meta">
+                        <span>Team (4–8 Members)</span>
+                        <span>Prize: ₹50,000</span>
+                    </div>
+                </article>
+
+                <!-- Event Card 2 -->
+                <article class="event-card">
+                    <div>
+                        <div class="event-icon">💃</div>
+                        <h3>Nritya & Street Beat</h3>
+                        <p>Two categories celebrating grace and groove: Classical Solo & Western Group Choreography face-offs.</p>
+                    </div>
+                    <div class="event-meta">
+                        <span>Solo & Group</span>
+                        <span>Prize: ₹45,000</span>
+                    </div>
+                </article>
+
+                <!-- Event Card 3 -->
+                <article class="event-card">
+                    <div>
+                        <div class="event-icon">🎭</div>
+                        <h3>Nukkad Natak (Street Play)</h3>
+                        <p>Powerful storytelling with acoustic percussion and raw theatrical energy addressing contemporary social themes.</p>
+                    </div>
+                    <div class="event-meta">
+                        <span>Team (10–18 Members)</span>
+                        <span>Prize: ₹35,000</span>
+                    </div>
+                </article>
+
+                <!-- Event Card 4 -->
+                <article class="event-card">
+                    <div>
+                        <div class="event-icon">🎨</div>
+                        <h3>Canvas & Couture</h3>
+                        <p>Live mural painting, digital illustration, and an avant-garde sustainable fashion runway walk.</p>
+                    </div>
+                    <div class="event-meta">
+                        <span>Solo & Duo</span>
+                        <span>Prize: ₹30,000</span>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======================================================================
+         3-DAY EVENT SCHEDULE SECTION
+         ====================================================================== -->
+    <section id="schedule" class="schedule-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Festival Itinerary</span>
+                <h2>3-Day Event Schedule</h2>
+                <p>Plan your fest experience so you never miss a beat, workshop, or headline performance.</p>
+            </div>
+
+            <div class="schedule-grid">
+                <!-- Day 1 -->
+                <div class="day-column">
+                    <div class="day-header">
+                        <span class="day-tag">Day 01 • March 20</span>
+                        <h3>Rhythms & Roots</h3>
+                    </div>
+                    <div class="timeline-list">
+                        <div class="timeline-item">
+                            <span class="timeline-time">09:30 AM – 11:00 AM</span>
+                            <h4>Inaugural Lamp Lighting</h4>
+                            <p>Main Auditorium • Classical Fusion Invocation</p>
+                        </div>
+                        <div class="timeline-item">
+                            <span class="timeline-time">11:30 AM – 03:00 PM</span>
+                            <h4>Solo Singing & Instrumental</h4>
+                            <p>Harmony Hall • Acoustic & Vocal Prelims</p>
+                        </div>
+                        <div class="timeline-item">
+                            <span class="timeline-time">04:00 PM – 06:30 PM</span>
+                            <h4>Nukkad Natak Showcase</h4>
+                            <p>Central Quad • Open-Air Street Theater</p>
+                        </div>
+                        <div class="timeline-item">
+                            <span class="timeline-time">07:00 PM – 09:30 PM</span>
+                            <h4>Indie Acoustic Night</h4>
+                            <p>Amphitheater • Featuring The Indie Collective</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Day 2 -->
+                <div class="day-column">
+                    <div class="day-header">
+                        <span class="day-tag">Day 02 • March 21</span>
+                        <h3>Spotlight & Stage</h3>
+                    </div>
+                    <div class="timeline-list">
+                        <div class="timeline-item">
+                            <span class="timeline-time">10:00 AM – 01:30 PM</span>
+                            <h4>Live Canvas & Sketching</h4>
+                            <p>Fine Arts Courtyard • Theme Reveal on Spot</p>
+                        </div>
+                        <div class="timeline-item">
+                            <span class="timeline-time">02:00 PM – 05:30 PM</span>
+                            <h4>Group Dance Championship</h4>
+                            <p>Main Auditorium • Hip-Hop, Contemporary & Folk</p>
+                        </div>
+                        <div class="timeline-item">
+                            <span class="timeline-time">06:00 PM – 07:30 PM</span>
+                            <h4>Couture Fashion Runway</h4>
+                            <p>Amphitheater • Eco-Chic Theme Walk</p>
+                        </div>
+                        <div class="timeline-item">
+                            <span class="timeline-time">08:00 PM – 10:00 PM</span>
+                            <h4>Stand-Up Comedy Special</h4>
+                            <p>Main Auditorium • Laugh Riot Live</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Day 3 -->
+                <div class="day-column">
+                    <div class="day-header">
+                        <span class="day-tag">Day 03 • March 22</span>
+                        <h3>Grand Finale</h3>
+                    </div>
+                    <div class="timeline-list">
+                        <div class="timeline-item">
+                            <span class="timeline-time">10:30 AM – 01:00 PM</span>
+                            <h4>Short Film & Photography</h4>
+                            <p>Media Lab • Screening & Jury Critique</p>
+                        </div>
+                        <div class="timeline-item">
+                            <span class="timeline-time">02:00 PM – 05:30 PM</span>
+                            <h4>Battle of Bands Finals</h4>
+                            <p>Amphitheater • Top 6 Finalist Bands</p>
+                        </div>
+                        <div class="timeline-item">
+                            <span class="timeline-time">06:00 PM – 07:00 PM</span>
+                            <h4>Valedictory & Prize Ceremony</h4>
+                            <p>Amphitheater • Overall Championship Trophy</p>
+                        </div>
+                        <div class="timeline-item">
+                            <span class="timeline-time">07:30 PM – 10:30 PM</span>
+                            <h4>Celebrity Pro-Show & DJ Night</h4>
+                            <p>Amphitheater • Headliner Live Concert</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======================================================================
+         FEATURED PERFORMERS SECTION
+         ====================================================================== -->
+    <section id="performers">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Pro-Night Lineup</span>
+                <h2>Featured Performers & Guests</h2>
+                <p>Get ready for electrifying live sets from acclaimed artists, bands, and celebrity judges.</p>
+            </div>
+
+            <div class="performers-grid">
+                <!-- Performer 1 -->
+                <article class="performer-card">
+                    <div class="performer-img-wrap">
+                        <img 
+                            src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=700&q=80" 
+                            alt="Lead vocalist performing with band on stage"
+                            onerror="this.src='https://placehold.co/600x450/4f46e5/ffffff?text=Aarav+%26+The+Echoes'"
+                        >
+                        <span class="performer-badge">March 22 • 8:00 PM</span>
+                    </div>
+                    <div class="performer-info">
+                        <h3>Aarav & The Echoes</h3>
+                        <div class="performer-genre">Indie Pop / Sufi Rock Headliner</div>
+                        <p>Known for chart-topping fusion anthems and high-octane live stadium performances across India.</p>
+                    </div>
+                </article>
+
+                <!-- Performer 2 -->
+                <article class="performer-card">
+                    <div class="performer-img-wrap">
+                        <img 
+                            src="https://images.unsplash.com/photo-1571266028243-d220c6a6db90?auto=format&fit=crop&w=700&q=80" 
+                            alt="Electronic music DJ performing at night festival"
+                            onerror="this.src='https://placehold.co/600x450/ec4899/ffffff?text=DJ+Kaira+Live'"
+                        >
+                        <span class="performer-badge">March 22 • 9:30 PM</span>
+                    </div>
+                    <div class="performer-info">
+                        <h3>DJ Kaira</h3>
+                        <div class="performer-genre">Electronic / Bass & Bollywood Remixes</div>
+                        <p>Closing out AURA '26 with a signature audiovisual light show and non-stop festival beats.</p>
+                    </div>
+                </article>
+
+                <!-- Performer 3 -->
+                <article class="performer-card">
+                    <div class="performer-img-wrap">
+                        <img 
+                            src="https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?auto=format&fit=crop&w=700&q=80" 
+                            alt="Contemporary dance crew performing under spotlights"
+                            onerror="this.src='https://placehold.co/600x450/f59e0b/0f172a?text=Urban+Pulse+Crew'"
+                        >
+                        <span class="performer-badge">March 21 • 4:30 PM</span>
+                    </div>
+                    <div class="performer-info">
+                        <h3>Urban Pulse Crew</h3>
+                        <div class="performer-genre">Guest Jury & Showcase Act</div>
+                        <p>National hip-hop champions judging the Group Dance Championship and performing a special showcase.</p>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======================================================================
+         VENUE INFORMATION SECTION
+         ====================================================================== -->
+    <section id="venue" class="venue-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Location & Access</span>
+                <h2>Venue Information</h2>
+                <p>Everything you need to know about reaching the campus and navigating the festival zones.</p>
+            </div>
+
+            <div class="venue-grid">
+                <div class="venue-details">
+                    <div class="venue-item">
+                        <div class="venue-item-icon">🏛️</div>
+                        <div>
+                            <h4>Main Venues</h4>
+                            <p>Open-Air Amphitheater & Tagore Memorial Auditorium, Sunrise Institute of Technology Campus.</p>
+                        </div>
+                    </div>
+
+                    <div class="venue-item">
+                        <div class="venue-item-icon">📍</div>
+                        <div>
+                            <h4>Campus Address</h4>
+                            <p>Knowledge Park Avenue, Sector 14, University District — 15 mins from Central Metro Station.</p>
+                        </div>
+                    </div>
+
+                    <div class="venue-item">
+                        <div class="venue-item-icon">🪪</div>
+                        <div>
+                            <h4>Entry & Campus Guidelines</h4>
+                            <p>Valid College Photo ID and AURA '26 Registration Pass are mandatory at Gate 1 & Gate 3. Free shuttle buses run every 20 minutes from the Metro Station.</p>
+                        </div>
+                    </div>
+
+                    <div class="venue-item">
+                        <div class="venue-item-icon">🍔</div>
+                        <div>
+                            <h4>Food Street & Hospitality</h4>
+                            <p>25+ student-curated food stalls, hydration stations, and outstation participant accommodation desks near the Central Quad.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Visual Campus Map Card -->
+                <div class="venue-map-card">
+                    <div class="map-grid-bg"></div>
+                    <div class="map-pin-box">
+                        <div class="map-pin-icon">📌</div>
+                        <h4>Sunrise Campus Amphitheater</h4>
+                        <p>Gate 1 Entry • Visitor Parking Available at North Lot</p>
+                        <a href="#register" class="btn btn-primary nav-cta">Get Entry Pass</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======================================================================
+         REGISTRATION SECTION (Pure HTML Form + CSS :target Confirmation)
+         ====================================================================== -->
+    <section id="register">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Join The Fest</span>
+                <h2>Participant & Visitor Registration</h2>
+                <p>Fill out the form below to reserve your spot for competitions or general pro-night passes.</p>
+            </div>
+
+            <div class="register-wrapper">
+                <!-- Action points to #registration-success so pure CSS displays the confirmation modal -->
+                <form action="#registration-success" method="get">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="full-name">Full Name *</label>
+                            <input type="text" id="full-name" name="full-name" placeholder="e.g., Ananya Sharma" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="college-name">College / University Name *</label>
+                            <input type="text" id="college-name" name="college-name" placeholder="e.g., National Institute of Arts" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">College Email Address *</label>
+                            <input type="email" id="email" name="email" placeholder="ananya@college.edu" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone">Phone / WhatsApp Number *</label>
+                            <input type="tel" id="phone" name="phone" placeholder="+91 98765 43210" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="event-category">Select Event Category *</label>
+                            <select id="event-category" name="event-category" required>
+                                <option value="" disabled selected>Choose an event or pass...</option>
+                                <option value="band">Battle of Bands (Music)</option>
+                                <option value="dance">Nritya & Street Beat (Dance)</option>
+                                <option value="drama">Nukkad Natak (Theater)</option>
+                                <option value="arts">Canvas & Couture (Fine Arts / Fashion)</option>
+                                <option value="visitor">General Visitor & Pro-Show Pass</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Participation Type *</label>
+                            <div class="radio-row">
+                                <label class="radio-label">
+                                    <input type="radio" name="participation" value="solo" checked> Solo
+                                </label>
+                                <label class="radio-label">
+                                    <input type="radio" name="participation" value="group"> Group / Team
+                                </label>
+                                <label class="radio-label">
+                                    <input type="radio" name="participation" value="audience"> Audience
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="notes">Team Name / Special Requirements (Optional)</label>
+                            <textarea id="notes" name="notes" rows="3" placeholder="Enter your team name, number of members, or stage equipment requirements..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="submit-row">
+                        <button type="submit" class="btn btn-primary">Complete Registration ✨</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pure-CSS Confirmation Modal (Opens when form submits to #registration-success) -->
+    <div id="registration-success" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <div class="modal-box">
+            <div class="modal-icon">✓</div>
+            <h3 id="modal-title">Registration Confirmed!</h3>
+            <p>
+                Thank you for registering for <strong>AURA '26</strong>. Please carry your valid College ID card to the Registration Desk at Gate 1 to collect your festival wristband.
+            </p>
+            <a href="#register" class="btn btn-primary">Done</a>
+        </div>
+    </div>
+
+    <!-- ======================================================================
+         FOOTER SECTION
+         ====================================================================== -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="#" class="brand-logo">AURA <span>'26</span></a>
+                    <p>
+                        The annual cultural festival celebrating student creativity, music, dance, and artistic camaraderie. Organized by the Student Cultural Council.
+                    </p>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#events">Competitions</a></li>
+                        <li><a href="#schedule">3-Day Schedule</a></li>
+                        <li><a href="#performers">Pro-Night Artists</a></li>
+                        <li><a href="#venue">Campus Venue</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Student Coordinators</h4>
+                    <ul>
+                        <li>Rohan Verma: +91 98111 22334</li>
+                        <li>Meera Nair: +91 98222 33445</li>
+                        <li>Email: culturalfest@campus.edu</li>
+                        <li>Instagram: @aurafest2026</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 AURA Cultural Committee • Designed with HTML5 & CSS3.</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
